@@ -1,0 +1,31 @@
+{% extends "base_blog.html" %}
+{% load static %}
+
+{% block title %}
+	博客详情
+{%endblock%}
+
+
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/blog.css' %}">
+{% endblock %}
+
+
+{% block boby %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-offset-2 col-xs-12 col-sm-6 blog-list">
+				<div class="blog-list-item">
+					<strong class="text_center">{{ blog.title }}</strong>
+					<p class="unobtrusive-text">{{ blog.add_time }}</p>
+					<hr>
+					<div class="blog-text">
+						<p>{{ blog.content }}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+

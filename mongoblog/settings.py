@@ -156,6 +156,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#session 有效期设置
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True #True：关闭浏览器，则Cookie失效。
+# SESSION_COOKIE_AGE=60*30   #30分钟
+
 #自定义用户模型
 AUTH_USER_MODEL = 'users.UserProfile'
 
