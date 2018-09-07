@@ -20,7 +20,9 @@
 					<p class="unobtrusive-text">{{ blog.add_time }}</p>
 					<hr>
 					<div class="blog-text">
-                        <img src="{{ blog.image.url }}" alt="">
+                        {% if blog.image %}
+                            <img src="{{ blog.image.url }}" alt="img">
+                        {% endif %}
 						<p>{{ blog.content }}</p>
 					</div>
 				</div>
