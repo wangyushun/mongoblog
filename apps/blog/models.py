@@ -31,6 +31,9 @@ class Blog(models.Model):
     title = models.CharField(max_length=200, verbose_name='标题')
     author = models.CharField(max_length=200, verbose_name='作者')
     category = models.ForeignKey(to='Category', on_delete=models.CASCADE, verbose_name='类型')
+    image = models.ImageField(upload_to='blog/images', blank=True,
+                              null=True, default='', verbose_name='图片')
+    file = models.FileField(upload_to='blog/files/%Y/%m/%d/', blank=True, null=True, default='', verbose_name='文件')
     content = models.TextField(verbose_name='内容')
     add_time = models.DateTimeField(auto_now_add=True, verbose_name='添加时间')
 

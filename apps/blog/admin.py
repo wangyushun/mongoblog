@@ -8,8 +8,7 @@ from .models import Category, Blog
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     list_display_links = ('id',)
-    list_editable = ('name',)
-
+    # list_editable = ('name',)
 
 
 @admin.register(Blog)
@@ -19,7 +18,7 @@ class BlogAdmin(admin.ModelAdmin):
 
     list_filter = ('category', 'add_time')
     search_fields = ['title', 'content']
-    list_editable = ('author',)
+    # list_editable = ('author',)
 
 
 

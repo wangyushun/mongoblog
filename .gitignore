@@ -1,3 +1,7 @@
 *.py[cod]
 .idea
+/.vscode/
+*.sqlite3
+*__pycache__/
+/mongoblog/security.py
 

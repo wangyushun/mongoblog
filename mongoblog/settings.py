@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #第三方apps
+    'storages',
+    #自定义apps
     'users.apps.UsersConfig',
     'blog.apps.BlogConfig',
 ]
@@ -78,34 +81,34 @@ WSGI_APPLICATION = 'mongoblog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'mongoblogdb',
-        'HOST': '127.0.0.1',
-        'PORT': 6666,
-        'USER': 'root',
-        'PASSWORD': 'wangyushun',
-        'AUTH_SOURCE': 'admin',
-        'AUTH_MECHANISM': 'SCRAM-SHA-1',
-        # 'ENFORCE_SCHEMA': True,
-        # 'REPLICASET': 'replicaset',
-        # 'SSL': 'ssl',
-        # 'SSL_CERTFILE': 'ssl_certfile',
-        # 'SSL_CA_CERTS': 'ssl_ca_certs',
-        # 'READ_PREFERENCE': 'read_preference'
-    },
-    'slave': {
-        'ENGINE': 'djongo',
-        'NAME': 'slavedb',
-        'HOST': '127.0.0.1',
-        'PORT': 6666,
-        'USER': 'root',
-        'PASSWORD': 'wangyushun',
-        'AUTH_SOURCE': 'admin',
-        'AUTH_MECHANISM': 'SCRAM-SHA-1',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'mongoblogdb',
+#         'HOST': '127.0.0.1',
+#         'PORT': 6666,
+#         'USER': 'root',
+#         'PASSWORD': 'wangyushun',
+#         'AUTH_SOURCE': 'admin',
+#         'AUTH_MECHANISM': 'SCRAM-SHA-1',
+#         # 'ENFORCE_SCHEMA': True,
+#         # 'REPLICASET': 'replicaset',
+#         # 'SSL': 'ssl',
+#         # 'SSL_CERTFILE': 'ssl_certfile',
+#         # 'SSL_CA_CERTS': 'ssl_ca_certs',
+#         # 'READ_PREFERENCE': 'read_preference'
+#     },
+#     'slave': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'slavedb',
+#         'HOST': '127.0.0.1',
+#         'PORT': 6666,
+#         'USER': 'root',
+#         'PASSWORD': 'wangyushun',
+#         'AUTH_SOURCE': 'admin',
+#         'AUTH_MECHANISM': 'SCRAM-SHA-1',
+#     }
+# }
 
 
 #apps和对应的数据库对应关系
@@ -151,16 +154,41 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.0/howto/static-files/
-
-STATIC_URL = '/static/'
-
 #session 有效期设置
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True #True：关闭浏览器，则Cookie失效。
 # SESSION_COOKIE_AGE=60*30   #30分钟
 
 #自定义用户模型
 AUTH_USER_MODEL = 'users.UserProfile'
+
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.0/howto/static-files/
+#静态文件上传到Amazon S3云端设置
+MEDIA_ROOT = '/media/'
+STATIC_ROOT = '/static/'
+
+# AWS_ACCESS_KEY_ID = '' # 替换为自己的key ID
+# AWS_SECRET_ACCESS_KEY = '' # 替换为自己的key
+AWS_STORAGE_BUCKET_NAME = 'mongoblog-static'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+# AWS_LOCATION = 'static'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+S3_URL = 'https://%s' % AWS_S3_CUSTOM_DOMAIN
+STATIC_URL = S3_URL + STATIC_ROOT
+MEDIA_URL = S3_URL + MEDIA_ROOT
+
+STATICFILES_STORAGE = 'mongoblog.storage_backends.StaticRootS3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'mongoblog.storage_backends.MediaRootS3Boto3Storage'
+
+
+#导入安全设置信息
+from .security import *
 
 
